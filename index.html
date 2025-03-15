@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>상담 문의</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* 기본 스타일 초기화 및 여백 확대 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 5px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+    /* 입력란 (textarea 제외) 통일 */
+    input[type="text"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      height: 40px;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+      resize: vertical;
+    }
+    .btn-submit {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    .btn-submit:hover {
+      background-color: #45a049;
+    }
+    /* 주소 입력란 옆 주소 검색 버튼 */
+    .address-group {
+      display: flex;
+      align-items: center;
+    }
+    .address-group input {
+      flex: 1;
+      height: 40px;
+    }
+    .address-group button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #eee;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    .address-group button:hover {
+      background-color: #ddd;
+    }
+    /* 보충 설명 텍스트: 작성란 아래에 배치, 파란색 */
+    .helper-text {
+      display: block;
+      font-size: 0.85em;
+      color: #007BFF;
+      margin-top: 5px;
+    }
+    /* 에러 메시지 스타일 */
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+    /* 미리보기 영역 스타일 */
+    #previewArea {
+      display: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 15px;
+      margin-top: 20px;
+      background-color: #f9f9f9;
+    }
+    #previewArea h3 {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    #previewArea p {
+      margin-bottom: 10px;
+      font-size: 1em;
+    }
+    #previewArea p strong {
+      width: 100px;
+      display: inline-block;
+    }
+    /* 미리보기 영역 버튼 나란히 가운데 정렬 */
+    #previewArea .btn-area {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    /* 미리보기 버튼 가운데 정렬 */
+    #previewBtn {
+      display: block;
+      margin: 20px auto;
+    }
+    
+    /* 반응형 웹 (모바일, 태블릿) */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .container {
+        padding: 20px;
+        max-width: 100%;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      input[type="text"],
+      input[type="tel"],
+      select,
+      textarea {
+        font-size: 0.9em;
+      }
+      .btn-submit {
+        font-size: 0.9em;
+        padding: 10px 20px;
+      }
+      #previewArea p strong {
+        width: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 제목 -->
+    <h1>상담 문의</h1>
+    <form id="contactForm">
+      <!-- 이름 -->
+      <div class="form-group">
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" required>
+        <span class="helper-text">예: 홍길동</span>
+        <div class="error-message" id="error-name"></div>
+      </div>
+      <!-- 나이 -->
+      <div class="form-group">
+        <label for="age">나이</label>
+        <select id="age" name="age" required>
+          <option value="">나이 선택</option>
+        </select>
+        <span class="helper-text">예: 30</span>
+        <div class="error-message" id="error-age"></div>
+      </div>
+      <!-- 성별 -->
+      <div class="form-group">
+        <label for="gender">성별</label>
+        <select id="gender" name="gender" required>
+          <option value="">선택하세요</option>
+          <option value="남성">남성</option>
+          <option value="여성">여성</option>
+          <option value="기타">기타</option>
+        </select>
+        <span class="helper-text">예: 남성</span>
+        <div class="error-message" id="error-gender"></div>
+      </div>
+      <!-- 주소 (주소검색 API 결과로 채워지며, 읽기 전용) -->
+      <div class="form-group">
+        <label for="address">주소</label>
+        <div class="address-group">
+          <input type="text" id="address" name="address" required readonly>
+          <button type="button" onclick="execDaumPostcode()">주소 검색</button>
+        </div>
+        <span class="helper-text">예: 서울특별시 강남구</span>
+        <div class="error-message" id="error-address"></div>
+      </div>
+      <!-- 상세주소 -->
+      <div class="form-group">
+        <label for="detailAddress">상세주소</label>
+        <input type="text" id="detailAddress" name="detailAddress" required>
+        <span class="helper-text">예: 101호, OO빌딩</span>
+        <div class="error-message" id="error-detailAddress"></div>
+      </div>
+      <!-- 휴대전화 -->
+      <div class="form-group">
+        <label for="phone">휴대전화</label>
+        <input type="tel" id="phone" name="phone" pattern="010-[0-9]{4}-[0-9]{4}" placeholder="010-0000-0000" required>
+        <span class="helper-text">형식: 010-0000-0000</span>
+        <div class="error-message" id="error-phone"></div>
+      </div>
+      <!-- 기타 문의사항 -->
+      <div class="form-group">
+        <label for="inquiry">기타 문의사항</label>
+        <textarea id="inquiry" name="inquiry" rows="5" required></textarea>
+        <span class="helper-text">문의 내용을 자세히 작성하세요</span>
+        <div class="error-message" id="error-inquiry"></div>
+      </div>
+      <!-- 미리보기 버튼 -->
+      <button type="button" id="previewBtn" class="btn-submit">미리보기</button>
+    </form>
+    
+    <!-- 미리보기 영역 -->
+    <div id="previewArea">
+      <h3>입력 데이터 미리보기</h3>
+      <p><strong>이름:</strong> <span id="preview-name"></span></p>
+      <p><strong>나이:</strong> <span id="preview-age"></span></p>
+      <p><strong>성별:</strong> <span id="preview-gender"></span></p>
+      <p><strong>주소:</strong> <span id="preview-address"></span></p>
+      <p><strong>상세주소:</strong> <span id="preview-detailAddress"></span></p>
+      <p><strong>휴대전화:</strong> <span id="preview-phone"></span></p>
+      <p><strong>문의사항:</strong> <span id="preview-inquiry"></span></p>
+      <div class="btn-area">
+        <button type="button" id="editBtn" class="btn-submit">수정하기</button>
+        <button type="button" id="submitBtn" class="btn-submit">제출하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EmailJS 라이브러리 로드 (jsdelivr CDN 사용) 및 퍼블릭 키 초기화 -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      emailjs.init("7Kwu4MSN0vm5LKpSr");
+    })();
+  </script>
+  
+  <!-- 다음 주소 API 스크립트 (주소 자동완성) -->
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script>
+    function execDaumPostcode() {
+      new daum.Postcode({
+        oncomplete: function(data) {
+          // 주소검색 API 결과로 주소란 채워짐
+          document.getElementById('address').value = data.address;
+          document.getElementById('error-address').textContent = "";
+        }
+      }).open();
+    }
+  </script>
+  
+  <!-- 나이 드롭다운 옵션 생성 스크립트 -->
+  <script>
+    var ageSelect = document.getElementById("age");
+    for (var i = 1; i <= 150; i++) {
+      var option = document.createElement("option");
+      option.value = i;
+      option.textContent = i;
+      ageSelect.appendChild(option);
+    }
+  </script>
+  
+  <!-- 외부 JS 파일 호출 -->
+  <script src="contact.js"></script>
+</body>
+</html>
